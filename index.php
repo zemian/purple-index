@@ -43,7 +43,10 @@ if (!$error) {
     foreach ($list as $item) {
         // NOTE: To avoid security risk, we always use $list_path as base path! Never go outside of it!
         if (is_dir("$list_path/$item")) {
-            array_push($dirs, $item);
+            // We will not show hidden ".folder" folders
+            if (substr_compare($item, '.', 0, 1) !== 0) {
+                array_push($dirs, $item);
+            }
         } else {
             array_push($files, $item);
         }
