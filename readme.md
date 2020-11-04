@@ -7,3 +7,6 @@ To try it, run this:
 	open http://localhost:3000
 
 Project Owner: Zemian Deng
+
+
+![Screenshot](docs/screenshot.png)
