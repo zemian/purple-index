@@ -17,11 +17,13 @@ To try it, run this:
 	php -S localhost:3000
 	open http://localhost:3000
 
+Why called `purple-index`? I want an adjective starts with `P` that stands for `PHP`, so Purple Index is 
+just as good as any.
+
 Screenshots:
 
 ![Screenshot #1](docs/screenshot.png)
 
 ![Screenshot #2](docs/screenshot2.png)
 
-Why called `purple-index`? I want an adjective starts with `P` that stands for `PHP`, so Purple Index is 
-just as good as any.
+![Screenshot #3](docs/screenshot3.png)
