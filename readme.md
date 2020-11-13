@@ -9,4 +9,6 @@ To try it, run this:
 Project Owner: Zemian Deng
 
 
-![Screenshot](docs/screenshot.png)
+![Screenshot #1](docs/screenshot.png)
+
+![Screenshot #2](docs/screenshot2.png)
