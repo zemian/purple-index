@@ -6,7 +6,7 @@ script is only intended for internal web site and serve as tool.
 
 Project Owner: Zemian Deng
 
-Project Home: https://github.com/zemian/index-listing
+Project Home: https://github.com/zemian/purple-index
 
 License: The MIT License (MIT)
 

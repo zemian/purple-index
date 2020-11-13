@@ -7,7 +7,7 @@
  * script is only intended for internal web site and serve as tool. 
  *
  * Project Owner: Zemian Deng
- * Project Home: https://github.com/zemian/index-listing
+ * Project Home: https://github.com/zemian/purple-index
  * License: The MIT License (MIT)
  * 
  * Dependencies: 
@@ -76,7 +76,7 @@ if (isset($_GET['cloc'])) {
 }
 
 // Page vars
-$title = 'Index Listing';
+$title = 'Index';
 $browse_dir = $_GET['dir'] ?? '';
 $dirs = [];
 $files = [];
@@ -210,7 +210,7 @@ if ($error === null) {
     <div class="level">
         <div class="level-item has-text-centered">
             <div>
-            <p>Powered by <a href="https://github.com/zemian/index-listing">index-listing</a></p> 
+            <p>Powered by <a href="https://github.com/zemian/purple-index">purple-index</a></p> 
             <?php if (!$dir_stat) {
                 echo "<p></p><a href='$url_path?dir=$browse_dir&dir_stats'>view dir stats</a></p>";    
             } ?>
