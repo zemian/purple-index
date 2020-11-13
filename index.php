@@ -32,7 +32,7 @@ $browse_dir = $_GET['dir'] ?? '';
 $error = '';
 $dirs = [];
 $files = [];
-$url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$url_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
 // Internal vars
 $root_path = __DIR__;
@@ -57,7 +57,7 @@ if (!$error) {
         $path = "$parent_path/$dir";
         $dir_paths []= $dir;
         if ($dir_links_idx++ < $dir_links_len) { // Update all except last element
-            $dir = "<a href='$url?dir=$path'>$dir</a>"; // Update by ref!
+            $dir = "<a href='$url_path?dir=$path'>$dir</a>"; // Update by ref!
         }
     }
     $dir_nav_links = implode('/', $dir_links);
@@ -123,7 +123,7 @@ if (!$error) {
             <!-- List of Directories -->
             <div class="menu">       
                 <?php // Bulma menu-label always capitalize words, so we override it to not do that for dir name sake. ?>
-                <p class="menu-label" style="text-transform: inherit;"><a href="<?php echo $url; ?>">Directory:</a> <?php echo $dir_nav_links; ?></p>
+                <p class="menu-label" style="text-transform: inherit;"><a href="<?php echo $url_path; ?>">Directory:</a> <?php echo $dir_nav_links; ?></p>
                 <ul class="menu-list">
                     <?php foreach ($dirs as $item) { ?>
                     <li><a href="index.php?dir=<?php echo ($browse_dir === '') ? $item : "$browse_dir/$item"; ?>"><?php echo $item; ?></a></li>
