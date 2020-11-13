@@ -126,6 +126,14 @@ if ($error === null) {
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://unpkg.com/bulma">
     <title><?php echo $title; ?></title>
+    <style>
+        .tag.has-purple-bg {
+            background-color: hsl(294, 71%, 79%);
+        }
+        .progress.has-purple-bg {
+            background-color: hsl(294, 71%, 79%);
+        }
+    </style>
 </head>
 <body>
 <div class="section">
@@ -137,15 +145,15 @@ if ($error === null) {
         </div>
         <div class="level-right">
             <div class="level-item">
-                <div class="field is-grouped is-grouped-multiline">
+                <div class="field is-grouped">
                     <div class="control">
                         <div class="tags has-addons">
-                            <span class="tag">Directories</span><span class="tag is-primary"><?php echo count($dirs); ?></span>
+                            <span class="tag">Directories</span><span class="tag has-purple-bg"><?php echo count($dirs); ?></span>
                         </div>
                     </div>
                     <div class="control">
                         <div class="tags has-addons">
-                            <span class="tag">Files</span><span class="tag is-primary"><?php echo count($files); ?></span>
+                            <span class="tag">Files</span><span class="tag has-purple-bg"><?php echo count($files); ?></span>
                         </div>
                     </div>
                 </div>
@@ -158,10 +166,10 @@ if ($error === null) {
             <?php echo $error; ?>
         </div>
     <?php } else { ?>
-        <div class="columns has-background-light">
-            <div class="column is-one-third" style="min-height: 60vh;">
+        <div class="columns">
+            <div class="column is-one-third" >
                 <!-- List of Directories -->
-                <div class="menu">       
+                <div class="menu p-2" style="min-height: 60vh;"> 
                     <?php // Bulma menu-label always capitalize words, so we override it to not do that for dir name sake. ?>
                     <p class="menu-label" style="text-transform: inherit;"><a href="<?php echo $url_path; ?>">Directory:</a> <?php echo $dir_nav_links; ?></p>
                     <ul class="menu-list">
@@ -190,7 +198,7 @@ if ($error === null) {
                 <h1 class="subtitle has-text-centered">Directory Statistic
                     <span class="help">(provided by <a href="https://github.com/AlDanial/cloc">cloc</a>)</span>
                 </h1>
-                <progress id="dir-stat-progress" class="progress is-small is-primary" max="100"></progress>
+                <progress id="dir-stat-progress" class="progress is-small has-purple-bg" max="100"></progress>
                 <div class="level">
                     <div class="level-item">
                         <pre id="cloc-output" style="visibility: hidden;"></pre>
