@@ -87,6 +87,22 @@ if (!$error) {
                 <h1 class="title"><?php echo $title; ?></h1>
             </div>
         </div>
+        <div class="level-right">
+            <div class="level-item">
+                <div class="field is-grouped is-grouped-multiline">
+                    <div class="control">
+                        <div class="tags has-addons">
+                            <span class="tag">Directories</span><span class="tag is-primary"><?php echo count($dirs); ?></span>
+                        </div>
+                    </div>
+                    <div class="control">
+                        <div class="tags has-addons">
+                            <span class="tag">Files</span><span class="tag is-primary"><?php echo count($files); ?></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="columns has-background-light">
         <div class="column is-one-third" style="min-height: 80vh;">
