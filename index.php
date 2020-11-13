@@ -29,43 +29,55 @@
  *  - Add AJAX to support 'cloc' program summary
  */
 
+// Global vars
+$root_path = __DIR__;
+
+function validate_path($list_path, $browse_dir) {
+    $error = null;
+    // Validate Inputs
+    if ( (substr_count($browse_dir, '.') > 0) /* It should not contains '.' or '..' relative paths */
+        || (!is_dir($list_path)) /* It should exists. */
+    ) {
+        $error = "ERROR: Invalid directory.";
+    }
+    return $error;
+}
+
 // Process AJAX request first
 if (isset($_GET['cloc'])) {
-    $dir = __DIR__;
-    $output = shell_exec("cloc $dir");
-    
+    $browse_dir = $_GET['dir'] ?? '';
+    $list_path = ($browse_dir === '') ? $root_path : "$root_path/$browse_dir";
+
     header('Content-Type: application/json');
-    if ($output !== null) {
-        echo json_encode(array('output' => $output));
+    $error = validate_path($list_path, $browse_dir);
+    if ($error === null) {
+        $output = shell_exec("cloc $list_path");
+        if ($output !== null) {
+            echo json_encode(array('output' => $output));
+        } else {
+            http_response_code(500);
+            echo json_encode(array('error_message' => "Failed to execute 'cloc' command."));
+        }
     } else {
-        http_response_code(500);
-        echo json_encode(array('error_message' => "Failed to execute 'cloc' command."));
+        echo json_encode(array('error_message' => $error));
     }
+    
+    
     exit;
 }
 
 // Page vars
 $title = 'Index Listing';
 $browse_dir = $_GET['dir'] ?? '';
-$dir_stat = !isset($_GET['no_dir_stat']);
-$error = '';
 $dirs = [];
 $files = [];
 $url_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-
-// Internal vars
-$root_path = __DIR__;
+$dir_stat = isset($_GET['dir_stat']);
 $list_path = ($browse_dir === '') ? $root_path : "$root_path/$browse_dir";
-
-// Validate Inputs
-if ( (substr_count($browse_dir, '.') > 0) /* It should not contains '.' or '..' relative paths */
-    || (!is_dir($list_path)) /* It should exists. */
-) {
-    $error = "ERROR: Invalid directory.";
-}
+$error = validate_path($list_path, $browse_dir);
 
 // Get files and dirs listing
-if (!$error) {
+if ($error === null) {
     // Build dir navigation links
     $dir_links = explode('/', $browse_dir);
     $dir_links_len = count($dir_links);
@@ -132,7 +144,7 @@ if (!$error) {
         </div>
     </div>
 
-    <?php if ($error) { ?>
+    <?php if ($error !== null) { ?>
         <div class="notification is-danger">
             <?php echo $error; ?>
         </div>
@@ -173,10 +185,9 @@ if (!$error) {
                     </div>
                 </div>
             </div>
-            <div id='dir-stat-not-available' style="display: none" class="has-text-centered">
-                <p>Want some directory statistic report?
-                    Try <code>brew install <a href="https://github.com/AlDanial/cloc">cloc</a></code> 
-                    if you are on a MacOSX.</p>
+            <div id='dir-stat-error' style="display: none" class="has-text-centered">
+                <p>There seems to be a problem with the <a href="https://github.com/AlDanial/cloc">cloc</a> tool.
+                    Have you installed it? Try <code>brew install clock</code> if you are on a MacOSX.</p>
             </div>
         <?php } ?>
         
@@ -185,15 +196,20 @@ if (!$error) {
 
 <div class="footer has-background-white">
     <div class="level">
-        <div class="level-item">
-            Powered by <a href="https://github.com/zemian/index-listing">index-listing</a>
+        <div class="level-item has-text-centered">
+            <div>
+            <p>Powered by <a href="https://github.com/zemian/index-listing">index-listing</a></p> 
+            <?php if (!$dir_stat) {
+                echo "<p></p><a href='$url_path?dir=$browse_dir&dir_stat'>view dir stats</a></p>";    
+            } ?>
+            </div>
         </div>
     </div>
 </div>
 
 <?php if ($dir_stat) { ?>
     <script>
-        var url = '<?php $url_path ?>?cloc';
+        var url = '<?php echo "$url_path?cloc&dir=$browse_dir" ?>';
         document.addEventListener('DOMContentLoaded', function () {
             fetch(url).then(resp => resp.json()).then(data => {
                 if (!data.error_message) {
@@ -201,7 +217,7 @@ if (!$error) {
                     document.getElementById('dir-stat').style.display = 'inherit';
                 } else {
                     console.warn('Fetch failed: ' + data.error_message);
-                    document.getElementById('dir-stat-not-available').style.display = 'inherit';
+                    document.getElementById('dir-stat-error').style.display = 'inherit';
                 }
             });
         });
