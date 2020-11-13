@@ -47,6 +47,7 @@ if (isset($_GET['cloc'])) {
 // Page vars
 $title = 'Index Listing';
 $browse_dir = $_GET['dir'] ?? '';
+$dir_stat = !isset($_GET['no_dir_stat']);
 $error = '';
 $dirs = [];
 $files = [];
@@ -162,20 +163,23 @@ if (!$error) {
                 <?php } ?>
             </div>
         </div> <!-- end of columns -->
-        
-        <div id='dir-stat' style="display: none">
-            <h1 class="subtitle has-text-centered">Directory <a href="https://github.com/AlDanial/cloc">Stat</a></h1>
-            <div class="level">
-                <div class="level-item">
-                    <pre id="cloc-output"></pre>
+
+        <?php if ($dir_stat) { ?>
+            <div id='dir-stat' style="display: none">
+                <h1 class="subtitle has-text-centered">Directory <a href="https://github.com/AlDanial/cloc">Stat</a></h1>
+                <div class="level">
+                    <div class="level-item">
+                        <pre id="cloc-output"></pre>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div id='dir-stat-not-available' style="display: none" class="has-text-centered">
-            <p>Want some directory statistic report?
-                Try <code>brew install <a href="https://github.com/AlDanial/cloc">cloc</a></code> 
-                if you are on a MacOSX.</p>
-        </div>
+            <div id='dir-stat-not-available' style="display: none" class="has-text-centered">
+                <p>Want some directory statistic report?
+                    Try <code>brew install <a href="https://github.com/AlDanial/cloc">cloc</a></code> 
+                    if you are on a MacOSX.</p>
+            </div>
+        <?php } ?>
+        
     <?php } ?>
 </div> <!-- end of section -->
 
@@ -187,20 +191,22 @@ if (!$error) {
     </div>
 </div>
 
-<script>
-    var url = '<?php $url_path ?>?cloc';
-    document.addEventListener('DOMContentLoaded', function () {
-        fetch(url).then(resp => resp.json()).then(data => {
-            if (!data.error_message) {
-                document.getElementById('cloc-output').innerText = data.output;
-                document.getElementById('dir-stat').style.display = 'inherit';
-            } else {
-                console.warn('Fetch failed: ' + data.error_message);
-                document.getElementById('dir-stat-not-available').style.display = 'inherit';
-            }
+<?php if ($dir_stat) { ?>
+    <script>
+        var url = '<?php $url_path ?>?cloc';
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch(url).then(resp => resp.json()).then(data => {
+                if (!data.error_message) {
+                    document.getElementById('cloc-output').innerText = data.output;
+                    document.getElementById('dir-stat').style.display = 'inherit';
+                } else {
+                    console.warn('Fetch failed: ' + data.error_message);
+                    document.getElementById('dir-stat-not-available').style.display = 'inherit';
+                }
+            });
         });
-    });
-</script>
+    </script>
+<?php } ?>
 
 </body>
 </html>
