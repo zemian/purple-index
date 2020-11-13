@@ -8,7 +8,8 @@
  *
  * Project Owner: Zemian Deng
  * Project Home: https://github.com/zemian/index-listing
- * Release: 
+ * Release Notes: 
+ * 
  * 1.0.0 2020-11-04
  *  - List files alphabetically.
  *  - Each file should be listed as a link and go to the page when clicked.
