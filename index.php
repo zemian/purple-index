@@ -105,7 +105,7 @@ if (!$error) {
         </div>
     </div>
     <div class="columns has-background-light">
-        <div class="column is-one-third" style="min-height: 80vh;">
+        <div class="column is-one-third" style="min-height: 60vh;">
             <!-- List of Directories -->
             <div class="menu">       
                 <?php // Bulma menu-label always capitalize words, so we override it to not do that for dir name sake. ?>
