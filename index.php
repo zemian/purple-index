@@ -19,6 +19,11 @@
  * 1.1.0 2020-11-12
  *  - New style look with footer.
  *  - Navigation on links for each sub dir.
+ * 
+ * 1.1.1 2020-11-13
+ *  - Remove unused parent parameter
+ *  - Fix dir parameter to not have slash prefix
+ *  - Fix error display
  */
 
 // Page vars
