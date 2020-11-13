@@ -29,24 +29,9 @@ $dirs = [];
 $files = [];
 $url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-// Build dir navigation
-$dir_links = explode('/', $browse_dir);
-$dir_links_len = count($dir_links);
-$dir_paths = [];
-$dir_links_idx = 1;
-foreach ($dir_links as &$dir) {
-    $parent_path = implode('/', $dir_paths);
-    $path = "$parent_path/$dir";
-    $dir_paths []= $dir;
-    if ($dir_links_idx++ < $dir_links_len) { // Update all except last element
-        $dir = "<a href='$url?dir=$path>$dir</a>"; // Update by ref!
-    }
-}
-$dir_nav_links = implode('/', $dir_links);
-
 // Internal vars
 $root_path = __DIR__;
-$list_path = "$root_path/$browse_dir";
+$list_path = ($browse_dir === '') ? $root_path : "$root_path/$browse_dir";
 
 // Validate Inputs
 if ( (substr_count($browse_dir, '.') > 0) /* It should not contains '.' or '..' relative paths */
@@ -57,6 +42,21 @@ if ( (substr_count($browse_dir, '.') > 0) /* It should not contains '.' or '..' 
 
 // Get files and dirs listing
 if (!$error) {
+    // Build dir navigation links
+    $dir_links = explode('/', $browse_dir);
+    $dir_links_len = count($dir_links);
+    $dir_paths = [];
+    $dir_links_idx = 1;
+    foreach ($dir_links as &$dir) {
+        $parent_path = implode('/', $dir_paths);
+        $path = "$parent_path/$dir";
+        $dir_paths []= $dir;
+        if ($dir_links_idx++ < $dir_links_len) { // Update all except last element
+            $dir = "<a href='$url?dir=$path'>$dir</a>"; // Update by ref!
+        }
+    }
+    $dir_nav_links = implode('/', $dir_links);
+    
     // We need to get rid of the first two entries for "." and ".." returned by scandir().
     $list = array_slice(scandir($list_path), 2);
     foreach ($list as $item) {
@@ -107,7 +107,13 @@ if (!$error) {
             </div>
         </div>
     </div>
-    <div class="columns has-background-light">
+
+    <?php if ($error) { ?>
+        <div class="notification is-danger">
+            <?php echo $error; ?>
+        </div>
+    <?php } else { ?>
+        <div class="columns has-background-light">
         <div class="column is-one-third" style="min-height: 60vh;">
             <!-- List of Directories -->
             <div class="menu">       
@@ -115,16 +121,14 @@ if (!$error) {
                 <p class="menu-label" style="text-transform: inherit;"><a href="<?php echo $url; ?>">Directory:</a> <?php echo $dir_nav_links; ?></p>
                 <ul class="menu-list">
                     <?php foreach ($dirs as $item) { ?>
-                    <li><a href="index.php?dir=<?php echo "$browse_dir/$item"; ?>"><?php echo $item; ?></a></li>
+                    <li><a href="index.php?dir=<?php echo ($browse_dir === '') ? $item : "$browse_dir/$item"; ?>"><?php echo $item; ?></a></li>
                     <?php } ?>
                 </ul>
             </div>
         </div>
         <div class="column">
-            <?php if ($error) { ?>
-                <div class="notification is-danger">
-                    <?php echo $error; ?>
-                </div>
+            <?php if (count($files) === 0) { ?>
+                <p><i>No files found!</i></p>
             <?php } else { ?>
                 <!-- List of Files -->
                 <ul class="panel has-background-white">
@@ -135,6 +139,7 @@ if (!$error) {
             <?php } ?>
         </div>
     </div>
+    <?php } ?>
 </div>
 <div class="footer has-background-white">
     Powered by <a href="https://github.com/zemian/index-listing">index-listing</a>.
