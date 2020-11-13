@@ -5,22 +5,25 @@
  * NOTE: 
  * Exposing directory and files is consider security risk for publicly hosted server! This 
  * script is only intended for internal web site and serve as tool. 
+ *
+ * Project Owner: Zemian Deng
+ * Project Home: https://github.com/zemian/index-listing
+ * Release: 
+ * 1.0.0 2020-11-04
+ *  - List files alphabetically.
+ *  - Each file should be listed as a link and go to the page when clicked.
+ *  - List dir separately on the side as navigation.
+ *  - Each dir is a link to browse sub dir content recursively. 
+ *  - Parent dir link
  * 
- * Features:
- *   - List files alphabetically.
- *   - Each file should be listed as a link and go to the page when clicked.
- *   - List dir separately on the side as navigation.
- *   - Each dir is a link to browse sub dir content recursively. 
- *   - Provide parent link to go back up one directory when browsing sub dir.
- * 
- * Author: Zemian Deng
- * Date: 2020-11-04
+ * 1.1.0 2020-11-12
+ *  - New style look with footer.
+ *  - Navigation on links for each sub dir.
  */
 
 // Page vars
 $title = 'Index Listing';
 $browse_dir = $_GET['dir'] ?? '';
-$parent_browse_dir = $_GET['parent'] ?? '';
 $error = '';
 $dirs = [];
 $files = [];
@@ -36,10 +39,10 @@ foreach ($dir_links as &$dir) {
     $path = "$parent_path/$dir";
     $dir_paths []= $dir;
     if ($dir_links_idx++ < $dir_links_len) { // Update all except last element
-        $dir = "<a href='$url?dir=$path&parent=$parent_path'>$dir</a>"; // Update by ref!
+        $dir = "<a href='$url?dir=$path>$dir</a>"; // Update by ref!
     }
 }
-$browse_dir_url = implode('/', $dir_links);
+$dir_nav_links = implode('/', $dir_links);
 
 // Internal vars
 $root_path = __DIR__;
@@ -109,10 +112,10 @@ if (!$error) {
             <!-- List of Directories -->
             <div class="menu">       
                 <?php // Bulma menu-label always capitalize words, so we override it to not do that for dir name sake. ?>
-                <p class="menu-label" style="text-transform: inherit;"><a href="<?php echo $url; ?>">Directory:</a> <?php echo $browse_dir_url; ?></p>
+                <p class="menu-label" style="text-transform: inherit;"><a href="<?php echo $url; ?>">Directory:</a> <?php echo $dir_nav_links; ?></p>
                 <ul class="menu-list">
                     <?php foreach ($dirs as $item) { ?>
-                    <li><a href="index.php?dir=<?php echo "$browse_dir/$item"; ?>&parent=<?php echo $browse_dir; ?>"><?php echo $item; ?></a></li>
+                    <li><a href="index.php?dir=<?php echo "$browse_dir/$item"; ?>"><?php echo $item; ?></a></li>
                     <?php } ?>
                 </ul>
             </div>
