@@ -25,8 +25,9 @@
  *  - Fix dir parameter to not have slash prefix
  *  - Fix error display
  * 
- * 1.2.0 SNAPSHOT
- *  - Add AJAX to support 'cloc' program summary
+ * 1.2.0 2020-11-13
+ *  - Add view dir stat link and output
+ *  - Add AJAX to support for 'cloc' API for dir stat
  */
 
 // Global vars
