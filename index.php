@@ -27,8 +27,9 @@
  *  - Fix error display
  * 
  * 1.2.0 2020-11-13
- *  - Add view dir stat link and output
- *  - Add AJAX to support for 'cloc' API for dir stat
+ *  - Add view dir stats link and output
+ *  - Add AJAX to support for 'cloc' API for dir stats
+ *  - Add progress bar while waiting for dir stats
  */
 
 // Global vars
@@ -74,7 +75,7 @@ $browse_dir = $_GET['dir'] ?? '';
 $dirs = [];
 $files = [];
 $url_path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-$dir_stat = isset($_GET['dir_stat']);
+$dir_stat = isset($_GET['dir_stats']);
 $list_path = ($browse_dir === '') ? $root_path : "$root_path/$browse_dir";
 $error = validate_path($list_path, $browse_dir);
 
@@ -179,15 +180,18 @@ if ($error === null) {
         </div> <!-- end of columns -->
 
         <?php if ($dir_stat) { ?>
-            <div id='dir-stat' style="display: none">
-                <h1 class="subtitle has-text-centered">Directory <a href="https://github.com/AlDanial/cloc">Stat</a></h1>
+            <div id='dir-stat'">
+                <h1 class="subtitle has-text-centered">Directory Statistic
+                    <span class="help">(provided by <a href="https://github.com/AlDanial/cloc">cloc</a>)</span>
+                </h1>
+                <progress id="dir-stat-progress" class="progress is-small is-primary" max="100"></progress>
                 <div class="level">
                     <div class="level-item">
-                        <pre id="cloc-output"></pre>
+                        <pre id="cloc-output" style="visibility: hidden;"></pre>
                     </div>
                 </div>
             </div>
-            <div id='dir-stat-error' style="display: none" class="has-text-centered">
+            <div id='dir-stat-error' style="visibility: hidden;" class="has-text-centered">
                 <p>There seems to be a problem with the <a href="https://github.com/AlDanial/cloc">cloc</a> tool.
                     Have you installed it? Try <code>brew install clock</code> if you are on a MacOSX.</p>
             </div>
@@ -202,7 +206,7 @@ if ($error === null) {
             <div>
             <p>Powered by <a href="https://github.com/zemian/index-listing">index-listing</a></p> 
             <?php if (!$dir_stat) {
-                echo "<p></p><a href='$url_path?dir=$browse_dir&dir_stat'>view dir stats</a></p>";    
+                echo "<p></p><a href='$url_path?dir=$browse_dir&dir_stats'>view dir stats</a></p>";    
             } ?>
             </div>
         </div>
@@ -214,12 +218,14 @@ if ($error === null) {
         var url = '<?php echo "$url_path?cloc&dir=$browse_dir" ?>';
         document.addEventListener('DOMContentLoaded', function () {
             fetch(url).then(resp => resp.json()).then(data => {
+                document.getElementById('dir-stat-progress').style.visibility = 'hidden';
                 if (!data.error_message) {
-                    document.getElementById('cloc-output').innerText = data.output;
-                    document.getElementById('dir-stat').style.display = 'inherit';
+                    var el = document.getElementById('cloc-output');
+                    el.innerText = data.output;
+                    el.style.visibility = 'visible';
                 } else {
                     console.warn('Fetch failed: ' + data.error_message);
-                    document.getElementById('dir-stat-error').style.display = 'inherit';
+                    document.getElementById('dir-stat-error').style.visibility = 'visible';
                 }
             });
         });
