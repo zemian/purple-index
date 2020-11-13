@@ -22,3 +22,6 @@ Screenshots:
 ![Screenshot #1](docs/screenshot.png)
 
 ![Screenshot #2](docs/screenshot2.png)
+
+Why called `purple-index`? I want an adjective starts with `P` that stands for `PHP`, so Purple Index is 
+just as good as any.
