@@ -2,12 +2,18 @@
 /**
  * A simple php to browse a DocumentRoot directory where it list all dirs and files.
  *
- * NOTE: 
+ * SECURITY WARNING:
  * Exposing directory and files is consider security risk for publicly hosted server! This 
  * script is only intended for internal web site and serve as tool. 
  *
  * Project Owner: Zemian Deng
  * Project Home: https://github.com/zemian/index-listing
+ * License: The MIT License (MIT)
+ * 
+ * Dependencies: 
+ *  - Bulma CSS (for UI styling) https://bulma.io/
+ *  - Cloc (for dir stats) https://github.com/AlDanial/cloc
+ *
  * Release Notes: 
  * 
  * 1.0.0 2020-11-04
@@ -192,7 +198,7 @@ if ($error === null) {
                 </div>
             </div>
             <div id='dir-stat-error' style="visibility: hidden;" class="has-text-centered">
-                <p>There seems to be a problem with the <a href="https://github.com/AlDanial/cloc">cloc</a> tool.
+                <p>There seems to be a problem with the <code>cloc</code> command tool. 
                     Have you installed it? Try <code>brew install clock</code> if you are on a MacOSX.</p>
             </div>
         <?php } ?>

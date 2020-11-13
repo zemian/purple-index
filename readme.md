@@ -1,7 +1,14 @@
-This project contains one `index.php` file that can list your DocumentRoot directory
-when deployed in a web browser. You can easily copy and add it into any directory.
+A simple php to browse a DocumentRoot directory where it list all dirs and files.
+
+SECURITY WARNING:
+Exposing directory and files is consider security risk for publicly hosted server! This 
+script is only intended for internal web site and serve as tool. 
 
 Project Owner: Zemian Deng
+
+Project Home: https://github.com/zemian/index-listing
+
+License: The MIT License (MIT)
 
 Release Notes: _See `index.php` source comment_
 
