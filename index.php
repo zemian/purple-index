@@ -210,7 +210,7 @@ if ($error === null) {
             </div>
             <div id='dir-stats-error' style="visibility: hidden;" class="has-text-centered">
                 <p>There seems to be a problem with the <code>cloc</code> command tool.
-                    Have you installed it? Try <code>brew install clock</code> if you are on a MacOSX.</p>
+                    Have you installed it? Try <code>brew install cloc</code> if you are on a MacOSX.</p>
             </div>
         <?php } ?>
 
