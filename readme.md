@@ -29,3 +29,8 @@ Screenshots:
 ![Screenshot #2](docs/screenshot2.png)
 
 ![Screenshot #3](docs/screenshot3.png)
+
+
+## Related Projects
+
+* Want to take Markdown Notes with just a single `index.php`? Try [MarkNotes](https://github.com/zemian/marknotes)
